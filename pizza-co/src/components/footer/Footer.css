@@ -1,0 +1,26 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.msg {
+  font-size: 1.6rem;
+}
+
+.footer-btn {
+  background-color: #edc84b;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  color: inherit;
+  display: block;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.footer-btn:hover {
+  background-color: #e9bb24;
+}

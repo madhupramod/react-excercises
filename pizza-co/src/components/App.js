@@ -1,8 +1,9 @@
 import "./App.css";
+import Header from "./header/Header";
 function App() {
   return (
     <div className="container">
-      <header>header goes here</header>
+      <Header />
       <main>Main Section</main>
       <footer>footer Component</footer>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import "./Menu.css";
+import PizzaList from "../pizza-list/PizzaList";
 function Menu({ menuItems = [] }) {
   const number = menuItems.length;
   return (
@@ -12,7 +13,7 @@ function Menu({ menuItems = [] }) {
           all delicious.
         </p>
       </header>
-      <article></article>
+      <PizzaList pizzas={menuItems} />
     </main>
   );
 }

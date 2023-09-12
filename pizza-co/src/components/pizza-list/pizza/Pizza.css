@@ -1,0 +1,38 @@
+.pizza {
+  display: flex;
+  gap: 3.2rem;
+}
+
+.pizza img {
+  width: 12rem;
+}
+
+.pizza-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.pizza-info-name {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.pizza-info-ingredients {
+  font-size: 1.4rem;
+  font-weight: 300;
+  font-style: italic;
+  margin-bottom: auto;
+}
+.pizza-info-price {
+  font-size: 1.6rem;
+}
+
+.soldout {
+  color: #888;
+}
+
+.soldout img {
+  filter: grayscale();
+  opacity: 0.8;
+}

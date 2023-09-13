@@ -1,0 +1,11 @@
+.header-title {
+  background-color: #f4a226;
+  font-family: "Monoton";
+  font-size: 8rem;
+  text-transform: uppercase;
+  word-spacing: 30px;
+  letter-spacing: -5px;
+  padding: 2.4rem 0;
+  text-align: center;
+  font-weight: 400;
+}

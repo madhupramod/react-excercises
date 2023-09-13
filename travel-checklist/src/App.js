@@ -22,6 +22,9 @@ function App() {
       )
     );
   }
+  function handleClearList() {
+    setItems([]);
+  }
   return (
     <div className="app">
       <Header />
@@ -30,6 +33,7 @@ function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onselectCheckbox={handleCheckBoxSelection}
+        onClearList={handleClearList}
       />
     </div>
   );

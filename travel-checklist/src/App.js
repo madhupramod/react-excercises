@@ -3,6 +3,7 @@ import "./App.css";
 import AddItemForm from "./components/additem-form/AddItemForm";
 import Header from "./components/header/Header";
 import PackageList from "./components/package-list/PackageList";
+import Footer from "./components/footer/Footer";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -25,6 +26,7 @@ function App() {
   function handleClearList() {
     setItems([]);
   }
+
   return (
     <div className="app">
       <Header />
@@ -35,6 +37,7 @@ function App() {
         onselectCheckbox={handleCheckBoxSelection}
         onClearList={handleClearList}
       />
+      <Footer items={items} />
     </div>
   );
 }

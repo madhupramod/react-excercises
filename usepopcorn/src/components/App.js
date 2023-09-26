@@ -8,29 +8,7 @@ import ErrorMessage from "./error/ErrorMessage";
 import MovieList from "./movielist/MovieList";
 import WatchedMovieBox from "./watchedMovieBox/WatchedMovieBox";
 import "./App.css";
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-];
+import MovieDetail from "./movielist/movie-detail/MovieDetail";
 
 const tempWatchedData = [
   {
@@ -55,7 +33,7 @@ const tempWatchedData = [
   },
 ];
 const KEY = "<ADD YOUR API KEY>";
-
+const APP_URL = "https://www.omdbapi.com";
 const debounce = (func, delay = 1000) => {
   let timeoutId;
   if (timeoutId) {
@@ -74,6 +52,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const numresults = movieList ? movieList.length : 0;
 
@@ -82,9 +61,7 @@ function App() {
       try {
         setIsloading(true);
         setErrorMsg("");
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
+        const res = await fetch(`${APP_URL}/?apikey=${KEY}&s=${query}`);
         if (!res.ok) {
           throw new Error("Could not fetch");
         }
@@ -105,6 +82,15 @@ function App() {
     }
   }, [query]);
 
+  function handleMovieSelect(imdbID) {
+    if (selectedMovie?.imdbID === imdbID) {
+      setSelectedMovie(null);
+      return;
+    }
+    const foundMovie = movieList.find((m) => m.imdbID === imdbID);
+    setSelectedMovie(foundMovie);
+  }
+
   return (
     <>
       <Header>
@@ -116,10 +102,19 @@ function App() {
         <div className="box">
           {isLoading && <Loading />}
           {errorMsg && <ErrorMessage />}
-          {!isLoading && !errorMsg && <MovieList movieList={movieList} />}
+          {!isLoading && !errorMsg && (
+            <MovieList
+              movieList={movieList}
+              onMovieSelect={handleMovieSelect}
+            />
+          )}
         </div>
         <div className="box">
-          <WatchedMovieBox />
+          {selectedMovie ? (
+            <MovieDetail selectedMovieId={selectedMovie.imdbID} />
+          ) : (
+            <WatchedMovieBox />
+          )}
         </div>
       </main>
     </>

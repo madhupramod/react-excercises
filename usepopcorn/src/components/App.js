@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./header/Header";
 import Logo from "./logo/Logo";
 import NumResults from "./numResults/NumResults";
 import SearchBox from "./searchBox/SearchBox";
+import Loading from "./loading/Loading";
+import Error from "./error/Error";
+import MovieList from "./movielist/MovieList";
+import WatchedMovieBox from "./watchedMovieBox/WatchedMovieBox";
+import "./App.css";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -49,21 +54,59 @@ const tempWatchedData = [
     userRating: 9,
   },
 ];
+const KEY = "<ADD YOUR API KEY>";
 
 function App() {
   const [movieList, setMovieList] = useState(tempMovieData);
   const [watchedList, setWatchedList] = useState(tempWatchedData);
+  const [query, setQuery] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const numresults = movieList ? movieList.length : 0;
 
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        setIsloading(true);
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+
+        const data = await res.json();
+        if (data.response === "False") {
+          throw new Error("Movie Not Found");
+        }
+        setMovieList(data.Search);
+      } catch (error) {
+      } finally {
+        setIsloading(false);
+        setErrorMsg("");
+      }
+    }
+    if (query.length > 2) {
+      fetchMovies();
+    }
+  }, [query]);
+
   return (
-    <div className="App">
+    <>
       <Header>
         <Logo />
-        <SearchBox />
+        <SearchBox query={query} setQuery={setQuery} />
         <NumResults numResults={numresults} />
       </Header>
-    </div>
+      <main className="main">
+        <div className="box">
+          {isLoading && <Loading />}
+          {errorMsg && <Error />}
+          {!isLoading && !errorMsg && <MovieList movieList={movieList} />}
+        </div>
+        <div className="box">
+          <WatchedMovieBox />
+        </div>
+      </main>
+    </>
   );
 }
 

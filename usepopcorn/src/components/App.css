@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  height: calc(100vh - 7.2rem - 3 * 2.4rem);
+  gap: 2.4rem;
+  margin-top: 2.4rem;
+  justify-content: center;
+}
+
+.box {
+  max-width: 42rem;
+  width: 42rem;
+  background-color: var(--color-background-500);
+  border-radius: 0.9rem;
+  overflow: auto;
+}

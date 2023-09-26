@@ -91,6 +91,10 @@ function App() {
     setSelectedMovie(foundMovie);
   }
 
+  function handleMovieDetailClose() {
+    setSelectedMovie("");
+  }
+
   return (
     <>
       <Header>
@@ -111,7 +115,10 @@ function App() {
         </div>
         <div className="box">
           {selectedMovie ? (
-            <MovieDetail selectedMovieId={selectedMovie.imdbID} />
+            <MovieDetail
+              selectedMovieId={selectedMovie.imdbID}
+              onMovieClose={handleMovieDetailClose}
+            />
           ) : (
             <WatchedMovieBox />
           )}

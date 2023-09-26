@@ -1,5 +1,5 @@
 import React from "react";
-import "./Error.css";
+import "./ErrorMessage.css";
 
 function Error() {
   return <div className="error">⛔ Failed to load</div>;

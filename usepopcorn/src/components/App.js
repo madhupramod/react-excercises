@@ -4,7 +4,7 @@ import Logo from "./logo/Logo";
 import NumResults from "./numResults/NumResults";
 import SearchBox from "./searchBox/SearchBox";
 import Loading from "./loading/Loading";
-import Error from "./error/Error";
+import ErrorMessage from "./error/ErrorMessage";
 import MovieList from "./movielist/MovieList";
 import WatchedMovieBox from "./watchedMovieBox/WatchedMovieBox";
 import "./App.css";
@@ -56,8 +56,20 @@ const tempWatchedData = [
 ];
 const KEY = "<ADD YOUR API KEY>";
 
+const debounce = (func, delay = 1000) => {
+  let timeoutId;
+  if (timeoutId) {
+    clearTimeout();
+  }
+  return function (...args) {
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 function App() {
-  const [movieList, setMovieList] = useState(tempMovieData);
+  const [movieList, setMovieList] = useState([]);
   const [watchedList, setWatchedList] = useState(tempWatchedData);
   const [query, setQuery] = useState("");
   const [isLoading, setIsloading] = useState(false);
@@ -69,23 +81,27 @@ function App() {
     async function fetchMovies() {
       try {
         setIsloading(true);
+        setErrorMsg("");
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
         );
+        if (!res.ok) {
+          throw new Error("Could not fetch");
+        }
 
         const data = await res.json();
-        if (data.response === "False") {
+        if (data.Response === "False") {
           throw new Error("Movie Not Found");
         }
         setMovieList(data.Search);
       } catch (error) {
+        setErrorMsg(error);
       } finally {
         setIsloading(false);
-        setErrorMsg("");
       }
     }
     if (query.length > 2) {
-      fetchMovies();
+      debounce(fetchMovies, 1000)();
     }
   }, [query]);
 
@@ -99,7 +115,7 @@ function App() {
       <main className="main">
         <div className="box">
           {isLoading && <Loading />}
-          {errorMsg && <Error />}
+          {errorMsg && <ErrorMessage />}
           {!isLoading && !errorMsg && <MovieList movieList={movieList} />}
         </div>
         <div className="box">

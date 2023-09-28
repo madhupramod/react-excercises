@@ -67,6 +67,19 @@ function MovieDetail({
     };
   }, [title]);
 
+  useEffect(() => {
+    function callback(e) {
+      console.log(e.code);
+      if (e.code === "Escape") {
+        onMovieClose();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [onMovieClose]);
+
   function handleAddMovie() {
     const newMovie = {
       ...movie,

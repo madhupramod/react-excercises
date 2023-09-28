@@ -4,6 +4,7 @@ import Loading from "../../loading/Loading";
 import ErrorMessage from "../../error/ErrorMessage";
 import StarRating from "../../starRating/StarRating";
 import { useMoviesDetails } from "../../../hooks/useMovies";
+import { useKey } from "../../../hooks/useKey";
 
 function MovieDetail({
   selectedMovieId,
@@ -38,18 +39,7 @@ function MovieDetail({
     };
   }, [title]);
 
-  useEffect(() => {
-    function callback(e) {
-      console.log(e.code);
-      if (e.code === "Escape") {
-        onMovieClose();
-      }
-    }
-    document.addEventListener("keydown", callback);
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onMovieClose]);
+  useKey("Escape", onMovieClose);
 
   function handleAddMovie() {
     const newMovie = {

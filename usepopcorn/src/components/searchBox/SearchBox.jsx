@@ -1,22 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import "./SearchBox.css";
+import { useKey } from "../../hooks/useKey";
 
 function SearchBox({ query, setQuery }) {
   const searchInput = useRef();
-  useEffect(() => {
-    function callback(e) {
-      if (document.activeElement === searchInput.current) {
-        return;
-      }
-      if (e.code === "Enter") {
-        searchInput.current.focus();
-      }
+
+  useKey("Enter", () => {
+    if (document.activeElement === searchInput.current) {
+      return;
     }
-    document.addEventListener("keydown", callback);
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [searchInput]);
+
+    searchInput.current.focus();
+    setQuery("");
+  });
+
   return (
     <input
       className="search"

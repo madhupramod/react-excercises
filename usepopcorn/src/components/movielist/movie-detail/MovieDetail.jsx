@@ -45,6 +45,7 @@ function MovieDetail({
     }
     getMovieDetails();
   }, [selectedMovieId]);
+
   const {
     Title: title,
     Year: year,
@@ -57,6 +58,14 @@ function MovieDetail({
     Director: director,
     Genre: genre,
   } = movie;
+
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+    return () => {
+      document.title = "usePopcorn";
+    };
+  }, [title]);
 
   function handleAddMovie() {
     const newMovie = {

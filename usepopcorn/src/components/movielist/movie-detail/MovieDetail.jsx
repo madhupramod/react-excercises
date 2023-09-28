@@ -3,48 +3,19 @@ import "./MovieDetails.css";
 import Loading from "../../loading/Loading";
 import ErrorMessage from "../../error/ErrorMessage";
 import StarRating from "../../starRating/StarRating";
+import { useMoviesDetails } from "../../../hooks/useMovies";
 
-const KEY = "<ADD YOUR API KEY>";
-const APP_URL = "https://www.omdbapi.com";
 function MovieDetail({
   selectedMovieId,
   onMovieClose,
   watchedList,
   onAddMovie,
 }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [movie, setMovie] = useState("");
-
   const watchedMovie = watchedList.find(
     (movie) => movie.imdbID === selectedMovieId
   );
   const [userRating, setUserRating] = useState(0);
-
-  useEffect(() => {
-    async function getMovieDetails() {
-      try {
-        setIsLoading(true);
-        setErrorMsg("");
-        const res = await fetch(
-          `${APP_URL}/?apikey=${KEY}&i=${selectedMovieId}`
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch movie details");
-        }
-        const data = await res.json();
-        if (data.Response === "False") {
-          throw new Error(data.Error);
-        }
-        setMovie(data);
-      } catch (error) {
-        setErrorMsg(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getMovieDetails();
-  }, [selectedMovieId]);
+  const { isLoading, errorMsg, movie } = useMoviesDetails(selectedMovieId);
 
   const {
     Title: title,

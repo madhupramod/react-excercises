@@ -10,6 +10,7 @@ import WatchedMovieBox from "./watchedMovieBox/WatchedMovieBox";
 import "./App.css";
 import MovieDetail from "./movielist/movie-detail/MovieDetail";
 import { useMovies } from "../hooks/useMovies";
+import Box from "./box/Box";
 
 function App() {
   const [watchedList, setWatchedList] = useState([]);
@@ -51,7 +52,7 @@ function App() {
         <NumResults numResults={numresults} />
       </Header>
       <main className="main">
-        <div className="box">
+        <Box>
           {isLoading && <Loading />}
           {errorMsg && <ErrorMessage />}
           {!isLoading && !errorMsg && (
@@ -60,8 +61,8 @@ function App() {
               onMovieSelect={handleMovieSelect}
             />
           )}
-        </div>
-        <div className="box">
+        </Box>
+        <Box>
           {selectedMovie ? (
             <MovieDetail
               selectedMovieId={selectedMovie.imdbID}
@@ -75,7 +76,7 @@ function App() {
               ondeleteWatched={handleonDeleteWatched}
             />
           )}
-        </div>
+        </Box>
       </main>
     </>
   );

@@ -1,0 +1,25 @@
+.watched-summary {
+  padding: 2.2rem 3.2rem 1.8rem 3.2rem;
+  border-radius: 0.9rem;
+  background-color: var(--color-backgroung-100);
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.2);
+}
+
+.watched-summary h2 {
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.summary-stats {
+  display: flex;
+  align-items: center;
+  gap: 2.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.summary-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}

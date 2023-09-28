@@ -1,0 +1,6 @@
+.watched-list {
+  list-style: none;
+  padding: 0.8rem 0;
+  overflow: auto;
+  position: relative;
+}

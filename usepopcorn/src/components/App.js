@@ -10,28 +10,6 @@ import WatchedMovieBox from "./watchedMovieBox/WatchedMovieBox";
 import "./App.css";
 import MovieDetail from "./movielist/movie-detail/MovieDetail";
 
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
 const KEY = "<ADD YOUR API KEY>";
 const APP_URL = "https://www.omdbapi.com";
 const debounce = (func, delay = 1000) => {
@@ -48,7 +26,7 @@ const debounce = (func, delay = 1000) => {
 
 function App() {
   const [movieList, setMovieList] = useState([]);
-  const [watchedList, setWatchedList] = useState(tempWatchedData);
+  const [watchedList, setWatchedList] = useState([]);
   const [query, setQuery] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -95,6 +73,17 @@ function App() {
     setSelectedMovie("");
   }
 
+  function handleAddMovie(movie) {
+    setWatchedList((prevList) => [...prevList, movie]);
+  }
+
+  function handleonDeleteWatched(id) {
+    console.log(id);
+    setWatchedList((prevList) =>
+      prevList.filter((movie) => movie.imdbID !== id)
+    );
+  }
+
   return (
     <>
       <Header>
@@ -118,9 +107,14 @@ function App() {
             <MovieDetail
               selectedMovieId={selectedMovie.imdbID}
               onMovieClose={handleMovieDetailClose}
+              watchedList={watchedList}
+              onAddMovie={handleAddMovie}
             />
           ) : (
-            <WatchedMovieBox />
+            <WatchedMovieBox
+              watchedList={watchedList}
+              ondeleteWatched={handleonDeleteWatched}
+            />
           )}
         </div>
       </main>

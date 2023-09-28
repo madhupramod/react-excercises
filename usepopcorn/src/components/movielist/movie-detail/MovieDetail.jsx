@@ -6,10 +6,19 @@ import StarRating from "../../starRating/StarRating";
 
 const KEY = "<ADD YOUR API KEY>";
 const APP_URL = "https://www.omdbapi.com";
-function MovieDetail({ selectedMovieId, onMovieClose }) {
+function MovieDetail({
+  selectedMovieId,
+  onMovieClose,
+  watchedList,
+  onAddMovie,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [movie, setMovie] = useState("");
+
+  const watchedMovie = watchedList.find(
+    (movie) => movie.imdbID === selectedMovieId
+  );
   const [userRating, setUserRating] = useState(0);
 
   useEffect(() => {
@@ -48,6 +57,17 @@ function MovieDetail({ selectedMovieId, onMovieClose }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAddMovie() {
+    const newMovie = {
+      ...movie,
+      Runtime: Number(runtime.split(" ").at(0)),
+      imdbRating: Number(imdbRating),
+      userRating: userRating,
+    };
+    onAddMovie(newMovie);
+    onMovieClose();
+  }
   return (
     <div className="movie-details">
       {isLoading && <Loading />}
@@ -74,9 +94,21 @@ function MovieDetail({ selectedMovieId, onMovieClose }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxStars={10} size={24} onSetRating={setUserRating} />
-              {userRating > 0 && (
-                <button className="btn-add">Add to list</button>
+              {watchedMovie ? (
+                <>You rated this movie {watchedMovie.userRating} ⭐</>
+              ) : (
+                <>
+                  <StarRating
+                    maxStars={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAddMovie}>
+                      Add to list
+                    </button>
+                  )}
+                </>
               )}
             </div>
             <p>
